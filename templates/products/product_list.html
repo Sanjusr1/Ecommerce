@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Products</h1>
+{% if selected_category %}
+  <p>Showing category: <strong>{{ selected_category }}</strong> — <a href="{% url 'products:product_list' %}">Show all</a></p>
+{% endif %}
+<div class="product-grid">
+  {% for p in products %}
+    <div class="product-card">
+      <a href="{% url 'products:product_detail' p.id %}">
+        <img src="{% static p.image %}" alt="{{ p.name }}" class="product-thumb" />
+        <h3>{{ p.name }}</h3>
+      </a>
+      <p class="product-price">₹{{ p.price|floatformat:2 }}</p>
+      <div class="product-actions">
+        <form method="post" action="{% url 'cart:add' p.id %}">
+          {% csrf_token %}
+          <button class="btn" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+  {% if not products %}
+    <p>No products yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

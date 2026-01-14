@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Order Summary</h1>
+{% if order %}
+	<div class="card">
+		<p><strong>Order ID:</strong> {{ order.id }}</p>
+		<p><strong>Placed at:</strong> {{ order.created_at }}</p>
+		<h3>Customer</h3>
+		<p>{{ order.customer.first_name }} {{ order.customer.last_name }} — {{ order.customer.email }}</p>
+		<h3>Shipping</h3>
+		<p>{{ order.shipping_address.address }}<br>{{ order.shipping_address.city }} {{ order.shipping_address.postal_code }}<br>{{ order.shipping_address.country }}</p>
+		<h3>Items</h3>
+		<table class="cart-table">
+			<thead>
+				<tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
+			</thead>
+			<tbody>
+				{% for item in order.items %}
+					<tr>
+						<td>{{ item.product.name }}</td>
+						<td>₹{{ item.product.price|floatformat:2 }}</td>
+						<td>{{ item.quantity }}</td>
+						<td>₹{{ item.line_total|floatformat:2 }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<p class="cart-total">Total: <strong>₹{{ order.total|floatformat:2 }}</strong></p>
+		<a class="btn" href="{% url 'orders:success' %}">Continue</a>
+	</div>
+{% else %}
+	<p>No recent order found — maybe you didn't place one yet?</p>
+{% endif %}
+{% endblock %}

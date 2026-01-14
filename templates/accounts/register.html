@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+	<div class="card">
+		<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+			<h1>Register</h1>
+			<div><a href="{% url 'accounts:login' %}" class="button">Login</a></div>
+		</div>
+
+		{% if form.non_field_errors %}
+			<div class="non-field-errors">{{ form.non_field_errors|striptags }}</div>
+		{% endif %}
+
+		<form method="post" action="{% url 'accounts:register' %}">
+			{% csrf_token %}
+			<div class="form-row">
+				{% for field in form %}
+					<div class="form-field {% if forloop.counter0|divisibleby:2 and forloop.counter0 != 0 %}half{% endif %}">
+						<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+						{{ field }}
+						{% if field.help_text %}
+							<div class="muted">{{ field.help_text }}</div>
+						{% endif %}
+						{% if field.errors %}
+							<div class="error">{{ field.errors|striptags }}</div>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+
+			<div style="margin-top:10px">
+				<button type="submit" class="btn">Create account</button>
+				<a href="/" class="btn secondary" style="margin-left:8px">Cancel</a>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

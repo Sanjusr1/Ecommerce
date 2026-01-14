@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="display:flex; gap:24px; align-items:flex-start;">
+  <div style="flex:1; border:1px solid #ddd; padding:16px; border-radius:6px;">
+    <h2>Login</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ login_form.non_field_errors }}
+      <div>
+        <label>Username</label>
+        {{ login_form.username }}
+      </div>
+      <div>
+        <label>Password</label>
+        {{ login_form.password }}
+      </div>
+      <button type="submit" name="login">Login</button>
+    </form>
+  </div>
+
+  <div style="flex:1; border:1px solid #ddd; padding:16px; border-radius:6px;">
+    <h2>Register</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ register_form.non_field_errors }}
+      <div>
+        <label>Username</label>
+        {{ register_form.username }}
+      </div>
+      <div>
+        <label>Password</label>
+        {{ register_form.password1 }}
+      </div>
+      <div>
+        <label>Confirm password</label>
+        {{ register_form.password2 }}
+      </div>
+      <button type="submit" name="register">Register</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

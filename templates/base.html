@@ -1,0 +1,53 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SimpleShop</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+    <main class="container">
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="message {{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      <!-- Toast container: a transient popup driven by JS when messages are present -->
+      <div id="toast" class="toast" role="status" aria-hidden="true"></div>
+      {% block content %}
+      <h1>Welcome to SimpleShop</h1>
+      <p>This is the minimal e-commerce prototype. <a href="/">View products</a></p>
+      {% endblock %}
+    </main>
+    {% include 'footer.html' %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        try{
+          const msgEl = document.querySelector('.messages .message');
+          if(!msgEl) return;
+          const toast = document.getElementById('toast');
+          if(!toast) return;
+          // Get message text (trim whitespace)
+          const text = msgEl.textContent.trim();
+          if(!text) return;
+          toast.textContent = text;
+          // show
+          toast.classList.add('show');
+          toast.setAttribute('aria-hidden','false');
+          // auto hide after 3.5s
+          const hide = () => { toast.classList.remove('show'); toast.setAttribute('aria-hidden','true'); };
+          const t = setTimeout(hide, 3500);
+          // allow click to dismiss early
+          toast.addEventListener('click', function(){ clearTimeout(t); hide(); });
+        } catch(e){ console.error('toast init error', e); }
+      });
+    </script>
+  </body>
+</html>
+

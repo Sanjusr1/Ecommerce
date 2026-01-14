@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+	<div class="card">
+		<a href="{% url 'cart:cart' %}" class="category-back">← Back to cart</a>
+		<h1>Checkout</h1>
+		{% if empty_cart %}
+			<p>Your cart is empty. Add some products before checking out.</p>
+		{% else %}
+			<div class="checkout-grid">
+				<div class="checkout-form">
+					  <form method="post" action="">
+						{% csrf_token %}
+						{{ form.non_field_errors }}
+						<div class="form-field half">
+							<label for="id_first_name">{{ form.first_name.label }}</label>
+							{{ form.first_name }}
+							{{ form.first_name.errors }}
+						</div>
+						<div class="form-field half">
+							<label for="id_last_name">{{ form.last_name.label }}</label>
+							{{ form.last_name }}
+							{{ form.last_name.errors }}
+						</div>
+						<div class="form-field">
+							<label for="id_email">{{ form.email.label }}</label>
+							{{ form.email }}
+							{{ form.email.errors }}
+						</div>
+						<div class="form-field">
+							<label for="id_address">{{ form.address.label }}</label>
+							{{ form.address }}
+							{{ form.address.errors }}
+						</div>
+						<div class="form-field half">
+							<label for="id_city">{{ form.city.label }}</label>
+							{{ form.city }}
+							{{ form.city.errors }}
+						</div>
+						<div class="form-field half">
+							<label for="id_postal_code">{{ form.postal_code.label }}</label>
+							{{ form.postal_code }}
+							{{ form.postal_code.errors }}
+						</div>
+						<div class="form-field">
+							<label for="id_country">{{ form.country.label }}</label>
+							{{ form.country }}
+							{{ form.country.errors }}
+						</div>
+						<div class="form-field">
+							<label for="id_phone">{{ form.phone.label }}</label>
+							{{ form.phone }}
+							{{ form.phone.errors }}
+						</div>
+						<div class="form-field">
+							<label for="id_notes">{{ form.notes.label }}</label>
+							{{ form.notes }}
+							{{ form.notes.errors }}
+						</div>
+						<div class="form-actions">
+							<button type="submit" class="btn">Place order</button>
+							<a href="{% url 'cart:cart' %}" class="btn btn-secondary">Back to cart</a>
+						</div>
+					</form>
+				</div>
+				<div class="checkout-summary">
+					<h3>Order Summary</h3>
+					<table class="cart-table">
+						<thead>
+							<tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
+						</thead>
+						<tbody>
+							{% for item in cart_items %}
+								<tr>
+									<td>{{ item.product.name }}</td>
+									<td>₹{{ item.product.price|floatformat:2 }}</td>
+									<td>{{ item.quantity }}</td>
+									<td>₹{{ item.line_total|floatformat:2 }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<p class="cart-total">Total: <strong>₹{{ total|floatformat:2 }}</strong></p>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+	<p class="sr-only">Privacy: This prototype does not store payment details — transaction is simulated.</p>
+</div>
+{% endblock %}

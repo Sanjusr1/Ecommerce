@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <a href="{% url 'products:product_list' %}" class="category-back">← Back to products</a>
+    <h1>Your Cart</h1>
+    {% if cart_items %}
+      <table class="cart-table">
+        <thead>
+          <tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+            <tr class="cart-item">
+              <td><a href="{% url 'products:product_detail' item.product.id %}">{{ item.product.name }}</a></td>
+              <td>₹{{ item.product.price|floatformat:2 }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>₹{{ item.line_total|floatformat:2 }}</td>
+              <td>
+                <form method="post" action="{% url 'cart:remove' item.product.id %}" style="display:inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-link">Remove</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="cart-total">Total: <strong>₹{{ total|floatformat:2 }}</strong></p>
+      <p><a class="btn" href="{% url 'cart:checkout' %}">Proceed to checkout</a></p>
+    {% else %}
+      <p>Your cart is empty.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <a href="{% url 'products:product_list' %}" class="category-back">← Back to products</a>
+    <h1>Categories</h1>
+    <ul class="categories-list">
+      {% for c in categories %}
+        <li class="category-item"><a href="{% url 'products:product_list_by_category' c|slugify %}">{{ c }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

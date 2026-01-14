@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+	<div class="card product-detail" style="display:flex;gap:20px;align-items:flex-start">
+		{% if product.category %}
+			<a href="{% url 'products:product_list_by_category' product.category|slugify %}" class="category-back">← Back to {{ product.category }}</a>
+		{% else %}
+			<a href="{% url 'products:product_list' %}" class="category-back">← Back to products</a>
+		{% endif %}
+		<div style="flex:0 0 320px">
+			<img src="{% static product.image %}" alt="{{ product.name }}" style="width:100%;border-radius:8px"/>
+		</div>
+		<div>
+			<h1>{{ product.name }}</h1>
+			<p class="product-price">₹{{ product.price|floatformat:2 }}</p>
+			<p>{{ product.description }}</p>
+			<form method="post" action="{% url 'cart:add' product.id %}">
+				{% csrf_token %}
+				<button class="btn">Add to cart</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

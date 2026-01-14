@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+	<div class="card">
+		<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+			<h1>Login</h1>
+			<div><a href="{% url 'accounts:register' %}" class="button">Register</a></div>
+		</div>
+
+		<form method="post" action="{% url 'accounts:login' %}">
+			{% csrf_token %}
+			{% if form.non_field_errors %}
+				<div class="non-field-errors">{{ form.non_field_errors|striptags }}</div>
+			{% endif %}
+
+			<div class="form-field">
+				<label for="id_username">Username</label>
+				{{ form.username }}
+				{% if form.username.errors %}<div class="error">{{ form.username.errors|striptags }}</div>{% endif %}
+			</div>
+			<div class="form-field">
+				<label for="id_password">Password</label>
+				{{ form.password }}
+				{% if form.password.errors %}<div class="error">{{ form.password.errors|striptags }}</div>{% endif %}
+			</div>
+
+			{% if next %}
+				<input type="hidden" name="next" value="{{ next }}">
+			{% endif %}
+
+			<div style="margin-top:8px">
+				<button class="btn" type="submit">Login</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

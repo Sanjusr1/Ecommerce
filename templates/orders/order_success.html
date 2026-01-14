@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Order Successful</h1>
+{% if order %}
+	<div class="card">
+		<p>Thank you, <strong>{{ order.customer.first_name }}</strong> — your order has been placed.</p>
+		<p><strong>Order ID:</strong> {{ order.id }}</p>
+		<p><strong>Total:</strong> ₹{{ order.total|floatformat:2 }}</p>
+		<p>We sent confirmation to <strong>{{ order.customer.email }}</strong>. This prototype stores orders in the session only.</p>
+		<a class="btn" href="{% url 'products:product_list' %}">Continue shopping</a>
+	</div>
+{% else %}
+	<p>There is no placed order in the session.</p>
+{% endif %}
+{% endblock %}
